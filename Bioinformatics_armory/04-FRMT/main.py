@@ -28,11 +28,16 @@ def read_file(file_name):
 
 
 # Write output file
-def write_file(file_name, res_id, data):
+def write_file(file_name, res_id, data, size):
     with open(file_name, 'w') as f:
         f.write(res_id + '\n')
-        for line in data:
-            f.write(line + "\n")
+        counter = 0
+        for letter in data:
+            f.write(letter)
+            counter += 1
+            if counter % size == 0:
+                f.write("\n")
+        f.write("\n")
 
 
 # Get the shortest sequence string and it's id
@@ -51,23 +56,11 @@ def get_shortest_string(email, ids):
     return res_id, res_seq
 
 
-# Split sequence into chunks of specified length
-def split_input(string, chunk_size):
-    num_chunks = len(string) / chunk_size
-    if (len(string) % chunk_size != 0):
-        num_chunks += 1
-    output = []
-    for i in range(0, int(num_chunks)):
-        output.append(string[chunk_size * i : chunk_size * (i + 1)])
-    return output
-
-
 def main():
     email = sys.argv[1]
     ids = read_file('rosalind_frmt.txt')
     res_id, res_seq = get_shortest_string(email, ids)
-    input_chunks = split_input(res_seq, 70)
-    write_file('output_frmt.txt', res_id, input_chunks)
+    write_file('output_frmt.txt', res_id, res_seq, 70)
 
 
 if __name__ == "__main__":
